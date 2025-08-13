@@ -4,7 +4,7 @@ const MAX_ALLOWED_PAGES = 500;
 interface Props {
   currentPage: number;
   totalPages: number;
-  maxVisible: number;
+  maxVisible?: number;
 }
 
 const props = defineProps<Props>();
