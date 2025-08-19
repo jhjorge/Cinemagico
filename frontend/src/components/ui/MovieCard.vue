@@ -3,12 +3,17 @@ import { ref } from "vue";
 import PrimaryButton from "./buttons/PrimaryButton.vue";
 import type { Movie } from "@/types/movie";
 import { useFavoritesStore } from "@/stores/favorites";
+import { useRouter } from "vue-router";
 
 const props = defineProps<{
   movie: Movie;
 }>();
+const router = useRouter();
 const isActive = ref(false);
 const store = useFavoritesStore();
+const goToDetail = () => {
+  router.push({ name: "movie-detail", params: { id: props.movie.id } });
+};
 </script>
 
 <template>
@@ -83,7 +88,7 @@ const store = useFavoritesStore();
 
         <PrimaryButton
           :aria-label="`veja mais sobre ${movie.title}`"
-          class="pointer-coarse:"
+          @click.stop="goToDetail"
         >
           Veja mais
         </PrimaryButton>

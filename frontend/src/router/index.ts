@@ -20,6 +20,15 @@ const router = createRouter({
         title: 'Favoritos'
       }
     },
+    {
+      path: '/movie/:id', // 
+      name: 'movie-detail',
+      component: () => import('@/views/movie/Index.vue'),
+      meta: {
+        title: 'Detalhes do Filme'
+      },
+      props: true,
+    }
   ],
 })
 

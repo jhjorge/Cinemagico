@@ -94,6 +94,10 @@ class MoviesService
         return $this->filterMovies($result);
     }
 
+    public function getMovieDetail(int $id)
+    {
+        return $this->request("/movie/{$id}");
+    }
 
     private function filterMovies($result)
     {

@@ -29,6 +29,12 @@ class MoviesController extends Controller
             'data' => $genres,
         ], 200);
     }
+    public function getDetail(int $id)
+    {
+        $movie = $this->movies_service->getMovieDetail($id);
+        return response()->json($movie);
+    }
+
     public function getPopular(MovieRequest $request)
     {
         $page = $request->query('page', 1);
