@@ -1,0 +1,474 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Cine Mágico API",
+        "description": "Documentação da API do Cine Mágico - baseada no TMDB",
+        "contact": {
+            "email": "jhjorgexs@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Servidor local"
+        }
+    ],
+    "paths": {
+        "/api/v1/movies/genres": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Listar gêneros",
+                "description": "Retorna a lista de gêneros disponíveis",
+                "operationId": "ed55c8147df72403e3e7ea17a93e52b4",
+                "responses": {
+                    "200": {
+                        "description": "Lista de gêneros retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "success"
+                                                },
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Genre"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/movies/{id}": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Detalhes de um filme",
+                "description": "Retorna os detalhes de um filme específico",
+                "operationId": "76c07fbc757802b16067f867f2cace5d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do filme",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do filme retornado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "success"
+                                                },
+                                                "data": {
+                                                    "$ref": "#/components/schemas/Movie"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Filme não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/movies/popular": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Filmes populares",
+                "description": "Retorna lista paginada de filmes populares",
+                "operationId": "149810e3f2dd79a434db8528a37d3410",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de filmes populares retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "success"
+                                                },
+                                                "data": {
+                                                    "$ref": "#/components/schemas/ApiMoviesResponse"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/movies/search": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Pesquisar filmes",
+                "description": "Pesquisa filmes por título",
+                "operationId": "215e21f88e9a405d5675cb6fdf5c7ed7",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "description": "Texto da pesquisa",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de filmes encontrada",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "success"
+                                                },
+                                                "data": {
+                                                    "$ref": "#/components/schemas/ApiMoviesResponse"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Query não fornecida",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/movies/now-playing": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Filmes em cartaz",
+                "description": "Retorna lista paginada de filmes em cartaz",
+                "operationId": "66df87bf98fee6b94faee32b213fad60",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de filmes em cartaz retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "success"
+                                                },
+                                                "data": {
+                                                    "$ref": "#/components/schemas/ApiMoviesResponse"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/movies/top-rated": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Filmes mais bem avaliados",
+                "description": "Retorna lista paginada de filmes mais bem avaliados",
+                "operationId": "ae83097c85c8075c76ed2a6ac27fb438",
+                "responses": {
+                    "200": {
+                        "description": "Lista de filmes retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "success"
+                                                },
+                                                "data": {
+                                                    "$ref": "#/components/schemas/ApiMoviesResponse"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/movies/upcoming": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "Próximos lançamentos",
+                "description": "Retorna lista paginada de filmes que ainda serão lançados",
+                "operationId": "ba2b24fa7521f756ad12970d3becb521",
+                "responses": {
+                    "200": {
+                        "description": "Lista de filmes futuros retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "success"
+                                                },
+                                                "data": {
+                                                    "$ref": "#/components/schemas/ApiMoviesResponse"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Movie": {
+                "description": "Objeto representando um filme retornado pela API do TMDB",
+                "properties": {
+                    "adult": {
+                        "description": "Indica se o filme é adulto",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "backdrop_path": {
+                        "description": "Caminho da imagem de fundo",
+                        "type": "string",
+                        "example": "/kyqM6padQzZ1eYxv84i9smNvZAG.jpg"
+                    },
+                    "genre_ids": {
+                        "description": "IDs dos gêneros do filme",
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "example": 27
+                        }
+                    },
+                    "id": {
+                        "description": "ID do filme",
+                        "type": "integer",
+                        "example": 1078605
+                    },
+                    "original_language": {
+                        "description": "Idioma original do filme",
+                        "type": "string",
+                        "example": "en"
+                    },
+                    "original_title": {
+                        "description": "Título original do filme",
+                        "type": "string",
+                        "example": "Weapons"
+                    },
+                    "overview": {
+                        "description": "Resumo do filme",
+                        "type": "string",
+                        "example": "Quando todas as crianças de uma mesma classe - exceto uma – somem misteriosamente na mesma noite e exatamente ao mesmo tempo, todos da cidade começam a se questionar quem ou o que está por trás deste estranho desaparecimento."
+                    },
+                    "popularity": {
+                        "description": "Popularidade do filme",
+                        "type": "number",
+                        "format": "float",
+                        "example": 201.3663
+                    },
+                    "poster_path": {
+                        "description": "Caminho da imagem do poster",
+                        "type": "string",
+                        "example": "/psEJSjQr6I9GSJTdW28CKC4Kffs.jpg"
+                    },
+                    "release_date": {
+                        "description": "Data de lançamento",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-08-04"
+                    },
+                    "title": {
+                        "description": "Título do filme",
+                        "type": "string",
+                        "example": "A Hora do Mal"
+                    },
+                    "video": {
+                        "description": "Indica se possui vídeo",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "vote_average": {
+                        "description": "Média das avaliações",
+                        "type": "number",
+                        "format": "float",
+                        "example": 7.555
+                    },
+                    "vote_count": {
+                        "description": "Número de votos",
+                        "type": "integer",
+                        "example": 442
+                    }
+                },
+                "type": "object"
+            },
+            "ApiMoviesResponse": {
+                "description": "Resposta da API contendo lista de filmes paginada",
+                "properties": {
+                    "page": {
+                        "description": "Página atual",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "results": {
+                        "description": "Lista de filmes",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Movie"
+                        }
+                    },
+                    "total_pages": {
+                        "description": "Total de páginas disponíveis",
+                        "type": "integer",
+                        "example": 52003
+                    },
+                    "total_results": {
+                        "description": "Total de filmes encontrados",
+                        "type": "integer",
+                        "example": 1040048
+                    }
+                },
+                "type": "object"
+            },
+            "Genre": {
+                "description": "Objeto representando um gênero de filme",
+                "properties": {
+                    "id": {
+                        "description": "ID do gênero",
+                        "type": "integer",
+                        "example": 28
+                    },
+                    "name": {
+                        "description": "Nome do gênero",
+                        "type": "string",
+                        "example": "Action"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Movies",
+            "description": "Operações relacionadas a filmes"
+        }
+    ]
+}
