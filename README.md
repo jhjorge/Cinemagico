@@ -80,6 +80,23 @@ Este projeto é uma aplicação completa com backend em **Laravel** e frontend d
    - API (backend): [http://localhost:8000](http://localhost:8000)
 
 ---
+## Documentação da API
+
+O backend deste projeto expõe uma documentação interativa dos endpoints disponíveis, incluindo parâmetros, exemplos de requisição e resposta.
+
+### Como acessar a documentação
+
+- **Endpoint da documentação (Swagger UI):**  
+  [http://localhost:8000/api/documentation](http://localhost:8000/api/documentation)
+
+### O que você encontra na documentação
+
+- Lista completa dos endpoints da API (`/api/v1/...`)
+- Parâmetros aceitos em cada rota
+- Estrutura das respostas (JSON)
+- Códigos de status retornados 
+- Possibilidade de **testar as rotas diretamente pelo navegador**
+
 
 ## Como testar a aplicação
 
